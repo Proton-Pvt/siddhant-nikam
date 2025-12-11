@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Cart | MediCare Hospital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Poppins',sans-serif;background:#f9fbff;margin:0;color:#333;}
+    header{background:linear-gradient(135deg,#007bff,#00c6ff);color:#fff;text-align:center;padding:60px 20px;}
+    main{max-width:800px;margin:40px auto;background:#fff;padding:30px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+    h2{color:#007bff;text-align:center;margin-bottom:25px;}
+    #cartList{list-style:none;padding:0;}
+    #cartList li{background:#eaf3ff;margin:8px 0;padding:10px;border-radius:8px;}
+    form{margin-top:30px;}
+    label{font-weight:600;}
+    input,textarea{width:100%;padding:10px;margin:8px 0 15px;border:1px solid #ccc;border-radius:8px;}
+    button{background:#007bff;color:#fff;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;}
+    button:hover{background:#0056b3;}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Your Booking Cart</h1>
+  <p>Review your selected tests and enter your details</p>
+</header>
+
+<main>
+  <h2>🧾 Selected Tests</h2>
+  <ul id="cartList"></ul>
+
+  <h2>👤 Customer Details</h2>
+  <form id="customerForm">
+    <label>Name:</label>
+    <input type="text" id="custName" required>
+    <label>Mobile Number:</label>
+    <input type="tel" id="custMobile" required pattern="[0-9]{10}" maxlength="10">
+    <label>Address:</label>
+    <textarea id="custAddress" rows="3" required></textarea>
+    <button type="submit">Confirm Booking</button>
+  </form>
+</main>
+
+<!-- ✅ Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+  // 1️⃣ Replace with your Firebase config
+  const firebaseConfig =  {
+  apiKey: "AIzaSyB0Kb1SjN-zkHqN1Pmy39DvO1eLvYg6VM4",
+  authDomain: "hospital-web-5241f.firebaseapp.com",
+  projectId: "hospital-web-5241f",
+  storageBucket: "hospital-web-5241f.firebasestorage.app",
+  messagingSenderId: "1091127002794",
+  appId: "1:1091127002794:web:b3f8debb9009fd1bbd32d3",
+  measurementId: "G-YHM6M371PY"
+};
+
+  // 2️⃣ Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // 3️⃣ Load selected tests
+  const cartList = document.getElementById("cartList");
+  const data = JSON.parse(localStorage.getItem("cartData")) || [];
+  if (data.length === 0) {
+    cartList.innerHTML = "<li>No items in cart.</li>";
+  } else {
+    data.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = `${item.department} - ${item.name} (${item.time})`;
+      cartList.appendChild(li);
+    });
+  }
+
+  // 4️⃣ Handle form submission and save to Firestore
+  document.getElementById("customerForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const name = document.getElementById("custName").value.trim();
+    const mobile = document.getElementById("custMobile").value.trim();
+    const address = document.getElementById("custAddress").value.trim();
+    const department = data[0]?.department || "Unknown";
+    const time = data[0]?.time || "";
+    const tests = data.map(t => t.name);
+
+    try {
+      await db.collection("bookings").add({
+        name,
+        mobile,
+        address,
+        department,
+        time,
+        tests,
+        date: new Date()
+      });
+      alert("✅ Booking saved successfully!");
+      localStorage.removeItem("cartData");
+      window.location.href = "index.html";
+    } catch (error) {
+      console.error("Error adding booking: ", error);
+      alert("❌ Error saving booking: " + error.message);
+    }
+  });
+</script>
+
+</body>
+</html>

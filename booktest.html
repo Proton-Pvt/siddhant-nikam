@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Tests | MediCare Hospital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Poppins',sans-serif;background:#f9fbff;color:#333;}
+    header{background:linear-gradient(135deg,#007bff,#00c6ff);color:white;text-align:center;padding:60px 20px;}
+    header h1{font-size:2.4em;margin-bottom:10px;}
+    main{max-width:800px;margin:40px auto;background:#fff;padding:30px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+    h2{text-align:center;color:#007bff;margin-bottom:30px;}
+    .test-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+    .test-card{background:#eaf3ff;padding:15px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.05);text-align:center;}
+    .test-card h3{color:#007bff;margin-bottom:10px;}
+    button{background:#007bff;color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:500;}
+    button:hover{background:#0056b3;}
+    input[type="time"]{width:100%;padding:10px;margin:20px 0;border:1px solid #ccc;border-radius:8px;}
+    #cart{margin-top:30px;background:#eaf3ff;padding:20px;border-radius:10px;}
+    #cart ul{list-style:none;padding:0;}
+    #cart li{background:#fff;margin:6px 0;padding:8px 10px;border-radius:8px;font-size:0.95em;}
+    a.back{display:inline-block;margin-top:20px;color:#007bff;text-decoration:none;font-weight:600;}
+    .next{background:#28a745;margin-left:10px;}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1 id="dept-name">Department</h1>
+  <p>Select your tests and choose a time slot</p>
+</header>
+
+<main>
+  <h2>Available Tests</h2>
+  <div class="test-list" id="test-list"></div>
+
+  <label>Select Preferred Time Slot:</label>
+  <input type="time" id="timeSlot">
+
+  <div id="cart">
+    <h3>🛒 Selected Tests</h3>
+    <ul id="cartItems"><li>No tests added yet</li></ul>
+  </div>
+
+  <div style="margin-top:20px;">
+    <a href="index.html" class="back">← Back</a>
+    <button class="next" onclick="goToCart()">Go to Cart</button>
+  </div>
+</main>
+
+<script>
+  const params=new URLSearchParams(window.location.search);
+  const dept=params.get("dept")||"Department";
+  document.getElementById("dept-name").textContent=dept+" Department";
+
+  const testsData={
+    "Cardiology":["ECG","Echocardiogram","TMT Stress Test"],
+    "Neurology":["EEG","MRI Brain","Nerve Conduction Study"],
+    "Orthopaedics":["X-Ray","Bone Density Scan","MRI Spine"],
+    "Emergency & Trauma":["CT Scan","Ultrasound","Blood Panel"]
+  };
+
+  const testList=document.getElementById("test-list");
+  const cartItems=document.getElementById("cartItems");
+  const timeSlot=document.getElementById("timeSlot");
+  let cart=[];
+
+  (testsData[dept]||[]).forEach(name=>{
+    const div=document.createElement("div");
+    div.className="test-card";
+    div.innerHTML=`<h3>${name}</h3><button onclick="addToCart('${name}')">Add to Cart</button>`;
+    testList.appendChild(div);
+  });
+
+  function addToCart(name){
+    const time=timeSlot.value;
+    if(!time){alert("Please select a time slot first.");return;}
+    cart.push({department:dept,name,time});
+    updateCart();
+  }
+
+  function updateCart(){
+    cartItems.innerHTML="";
+    cart.forEach(c=>{
+      const li=document.createElement("li");
+      li.textContent=`${c.name} — ${c.time}`;
+      cartItems.appendChild(li);
+    });
+  }
+
+  function goToCart(){
+    if(cart.length===0){alert("Please add at least one test.");return;}
+    localStorage.setItem("cartData",JSON.stringify(cart));
+    window.location.href="cart.html";
+  }
+</script>
+
+</body>
+</html>

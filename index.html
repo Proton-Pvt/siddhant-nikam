@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediCare Hospital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Poppins',sans-serif;background:#f8f9fc;color:#333;}
+    header{background:linear-gradient(135deg,#007bff,#00c6ff);color:#fff;text-align:center;padding:80px 20px;}
+    header h1{font-size:2.8em;margin-bottom:10px;}
+    header p{font-size:1.2em;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;padding:40px;}
+    .card{background:#fff;border-radius:15px;box-shadow:0 4px 10px rgba(0,0,0,0.1);overflow:hidden;text-align:center;transition:.3s;}
+    .card:hover{transform:translateY(-5px);}
+    .card img{width:100%;height:180px;object-fit:cover;}
+    .card h3{color:#007bff;margin:15px 0 8px;}
+    .card p{font-size:0.9em;padding:0 15px;margin-bottom:10px;}
+    button{background:#007bff;color:#fff;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;}
+    button:hover{background:#0056b3;}
+    footer{background:#007bff;color:#fff;text-align:center;padding:15px;}
+  </style>
+</head>
+<body>
+<header>
+  <h1>MediCare Hospital</h1>
+  <p>Advanced healthcare with compassion and technology</p>
+</header>
+
+<div class="grid">
+  <div class="card">
+    <img src="https://welcarehospital.net/wp-content/uploads/2025/07/Cardiology-1.jpg">
+    <h3>Cardiology</h3>
+    <p>Comprehensive heart care & diagnostics.</p>
+    <button onclick="window.location.href='booktest.html?dept=Cardiology'">Book Test</button>
+  </div>
+
+  <div class="card">
+    <img src="https://www.supremehospital.in/wp-content/uploads/2022/03/neurosurgeon-neurologist-600x380-1.jpg">
+    <h3>Neurology</h3>
+    <p>Brain, spine and nerve diagnostic services.</p>
+    <button onclick="window.location.href='booktest.html?dept=Neurology'">Book Test</button>
+  </div>
+
+  <div class="card">
+    <img src="https://irp.cdn-website.com/b174dce8/dms3rep/multi/bb-a94f4f13.PNG">
+    <h3>Orthopaedics</h3>
+    <p>Bone, joint and sports injury care.</p>
+    <button onclick="window.location.href='booktest.html?dept=Orthopaedics'">Book Test</button>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=800&q=60">
+    <h3>Emergency & Trauma</h3>
+    <p>24/7 trauma, critical injury and emergency tests.</p>
+    <button onclick="window.location.href='booktest.html?dept=Emergency%20%26%20Trauma'">Book Test</button>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 MediCare Hospital | Designed with ❤️ by Siddhant</p>
+</footer>
+</body>
+</html>
